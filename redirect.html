@@ -7,23 +7,24 @@
 </head>
 <body>
     <script>
-        // Function to get all search parameters
         function getAllUrlParams() {
             const searchParams = new URLSearchParams(window.location.search);
             return Object.fromEntries(searchParams.entries());
         }
 
-        // Function to redirect with params
         function redirectWithParams() {
             const params = getAllUrlParams();
             if(params.confirmation_url) {
-                const targetUrl = 'servicephysics://open'; // Replace with your target URL
-                const confirmationUrl = new URL(params.confirmation_url);
+                const targetUrl = 'servicephysics://open';
+                console.log(decodeURIComponent(params.confirmation_url))
+                const confirmationUrl = new URL(decodeURIComponent(params.confirmation_url));
                 const confirmationParams = Object.fromEntries(confirmationUrl.searchParams.entries());
                 const newUrl = new URL(targetUrl);
                 Object.keys(confirmationParams).forEach(key => {
-                    newUrl.searchParams.append(key, params[key]);
+                    newUrl.searchParams.append(key, confirmationParams[key]);
                 });
+
+                console.log(newUrl.toString());
 
                 window.location.href = newUrl.toString();
             }
@@ -32,6 +33,6 @@
         // Call the redirect function when the page loads
         window.onload = redirectWithParams;
     </script>
-    <p>Redirecting...</p>
+    <p id="testp">Redirecting to the Service Physics app...</p>
 </body>
 </html>
