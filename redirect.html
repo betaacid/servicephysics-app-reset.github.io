@@ -16,14 +16,17 @@
         // Function to redirect with params
         function redirectWithParams() {
             const params = getAllUrlParams();
-            const targetUrl = 'servicephysics://open'; // Replace with your target URL
-            
-            const newUrl = new URL(targetUrl);
-            Object.keys(params).forEach(key => {
-                newUrl.searchParams.append(key, params[key]);
-            });
+            if(params.confirmation_url) {
+                const targetUrl = 'servicephysics://open'; // Replace with your target URL
+                const confirmationUrl = new URL(params.confirmation_url);
+                const confirmationParams = Object.fromEntries(confirmationUrl.searchParams.entries());
+                const newUrl = new URL(targetUrl);
+                Object.keys(confirmationParams).forEach(key => {
+                    newUrl.searchParams.append(key, params[key]);
+                });
 
-            window.location.href = newUrl.toString();
+                window.location.href = newUrl.toString();
+            }
         }
 
         // Call the redirect function when the page loads
